@@ -1,0 +1,9 @@
+textarea {
+    min-height: 400px;
+}
+
+#email-recipient {
+    font-weight: bold;
+}
+
+
