@@ -1,0 +1,60 @@
+{% extends "network/layout.html" %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+    <div class="p-2">
+        <h2><strong>All Posts</strong></h2>
+        {% if success %}
+            <div class="alert alert-warning alert-dismissable fade show" role="alert">Your post has been created!
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+        <div class="card m-2 p-4">
+            <h5><strong>New Post</strong></h5>
+                    <form action="{% url 'index' %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            {{ form|crispy }}
+                        </div>
+                        <input type="submit" class="btn btn-primary mt-2" value="Post">
+                    </form>
+            
+        </div>
+        {% for post in posts %}
+        <div class="card m-2 p-2">
+            <div class="card-body">
+                <a href="{% url 'profile' post.creator %}">
+                    <h5><strong>{{post.creator}}</strong></h5>
+                </a>
+
+                <p class="card-text" id="post_content_{{post.id}}">{{post.content}}</p>
+                
+                <form action="#" method="post" id="edit_form_{{post.id}}" data-id="{{post.id}}" style="display: none">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ form|crispy }}
+                    </div>
+                    <div class="save-btn" data-id="{{post.id}}">
+                        <input type="submit" value="Save Changes "class="btn btn-primary save-btn" id="saveBtn_{{post.id}}" data-id="{{post.id}}">
+                    </div>
+                </form>
+
+                <p class="text-secondary">{{post.timestamp}}</p>
+                <div class="like-post-link" data-id="{{post.id}}">
+                    <span id="like_btn_{{post.id}}" class="{% if post.liked %} fas {%else%} far {% endif %} fa-heart" style="color: red;"></span>
+                    <div id="counter_{{post.id}}" class="like-counter">{{post.likes.count}}</div>
+                </div>
+                
+                {% if post.creator.id == user.id %}
+                    <a class="edit-post-link" data-id="{{post.id}}" href="">Edit post</a>
+                {% endif %}
+            </div>
+            
+        </div>
+        {% endfor %}
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+{% endblock %}

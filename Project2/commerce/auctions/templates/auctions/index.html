@@ -1,0 +1,35 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    
+        <div class="container p-3">
+            <h2>Active Listings</h2>
+            {% for listing in listings %}
+            <a href="{% url 'listing' listing.id %}" class="text-body">
+                <div class="row border border-dark m-5 p-3" style="border: 5px;">
+                    <div class="col-md-4">
+                        <img src="{{listing.image}}" style="width: 200px; height: 200px;" alt="No image provided">
+                    </div>
+                    <div class="col">
+                        <h4><strong>{{listing.title}}</strong></h4>
+                        <div class="text-muted">
+                            <p style="font-size: 18px;">{{listing.description}}</p>
+                        </div>
+                        
+                        <p class="mt-4">
+                            {% if listing.current_bid is Null %}
+                            <h5><strong>Price: </strong>${{listing.starting_bid}}</h5>
+                            {% else %}
+                            <h5><strong>Price: </strong>${{listing.current_bid}}</h5>
+                            {% endif %}
+                        </p>
+                        
+                        <p class="p-3"></p>
+                        <p class="text-muted mb-1">Created: {{listing.created_date}}</p>
+                    </div>
+                </div>     
+            </a>
+        {% endfor %}
+        </div>
+    
+{% endblock %}

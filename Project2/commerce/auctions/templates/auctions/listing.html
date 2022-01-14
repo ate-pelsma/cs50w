@@ -1,0 +1,96 @@
+{% extends "auctions/layout.html" %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+    <div class="container">
+        {% if listing.sold %}
+        <h1 class="text-center border border-warning rounded" style="border: 3px;">This auction has been closed</h1>
+        {% endif %}
+
+        <h1 class="row">Listing: {{listing.title}}</h1>
+
+        {% if listing.buyer == request.user %}
+        <h3 class="row font-italic mb-4">Congratulations, you have won the auction!</h3>
+        {% endif %}
+        
+        <form action="{% url 'watchlist' listing.id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-dark p-0 mb-3" 
+            {% if listing.watched %}
+            value="Stop watching"
+            {% else %}
+            value="Add to watchlist"
+            {% endif %}
+            style="width: 80px; height: 30px; font-size: 10px;"></input>
+        </form>
+        <p class="row"><img src="{{listing.image}}" alt="No image found" style="width: auto; max-height: 400px;"></p>
+        <p class="row text-muted">{{listing.description}}</p>
+        <p class="row">
+            {% if listing.current_bid is Null %}
+            <h3><strong>Starting price: ${{listing.starting_bid}}</strong></h3>
+            {% elif listing.sold %}
+            <h3><strong>Final price: ${{listing.current_bid}}</strong></h3>
+            {% else %}
+            <h3><strong>Current price: ${{listing.current_bid}}</strong></h3>
+            {% endif %}
+        </p>
+
+        {% if not listing.sold %}
+        <div class="form-group" style="width:200px;">
+            <form action="{% url 'make_bid' listing.id %}" method="post">
+                {% csrf_token %}
+                {{bid_form|crispy}}
+                <input type="submit" value="Place Bid" class="btn btn-primary ml-8">
+            </form>
+            {% if error %}
+            <div><strong>Please enter a valid bid</strong></div>
+            {% elif succes %}
+            <div><strong>You have placed your bid</strong></div>
+            {% elif own_item %}
+            <div><strong>You cannot bid on your own item</strong></div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <p>Details:
+            <ul class="mt-1">
+                <li>Listed by: {{listing.seller}}</li>
+                <li>Category: {{listing.category}}</li>
+            </ul>
+        </p>
+        <p>Comments
+            <ul>
+                {% for comment in comments %}
+                <li>{{comment.user}} says: {{comment.comment}}</li>
+                {% endfor %}
+            </ul>
+        </p>
+        <div class="form-group">
+            <form action="{% url 'comment' listing.id %}" method="post">
+                {% csrf_token %}
+                {{comment_form|crispy}}
+                <input type="submit" value="Place Comment" class="btn btn-primary">
+            </form>
+        </div>
+        {% if creator %}
+            {% if not listing.sold %}
+            <div class="form-group">
+                <form action="{% url 'listing' listing.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Close auction" class="btn btn-primary ml-8">
+                </form>
+            </div>
+            {% else %}
+            <div>This auction has been closed</div>
+            {% endif %}
+        {% elif no_bids %}
+        <div class="form-group">
+            <form action="{% url 'listing' listing.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Close auction" class="btn btn-primary ml-8">
+            </form>
+        </div>
+        <div>There are no bids on your item yet</div>
+        {% endif %}
+    </div>
+{% endblock %}
