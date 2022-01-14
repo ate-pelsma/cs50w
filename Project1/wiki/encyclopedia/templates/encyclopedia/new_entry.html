@@ -1,0 +1,29 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Create New Page
+{% endblock %}
+
+{% block body %}
+    {% if not edit_page %}
+        <h1>Create a new entry into our database</h1>
+    {% endif %}
+
+    {% if edit_page %}
+        <h1>Edit the selected page: {{ entry }}</h1>
+    {% endif %}
+
+    {% if exists %}
+        <div class="alert" role="alert">This entry already exists!</div>
+    {% endif %}
+
+    <div class="form-group">
+        <form action="{% url 'new_entry' %}" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" class="btn btn-primary" style="margin-top: 10px;">
+        </form>
+    </div>
+    
+{% endblock %}
+
