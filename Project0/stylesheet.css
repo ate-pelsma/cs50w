@@ -1,0 +1,82 @@
+nav {
+    text-align: right;
+    color: black;
+}
+
+a {
+    color: black;
+}
+
+#logo {
+    margin-bottom: 10px;
+}
+
+input {
+    outline: none;
+}
+
+#input {
+    width: 400px;
+    height: 30px;
+    border: 0px solid;
+    background-color: transparent;
+}
+
+#input_container {
+    border: 2px grey;
+    border-color: transparent;
+    background-color: white;
+    border-radius: 20px;
+    margin-left: 10px;
+}
+
+#img {
+    margin-top: 20px;
+}
+
+#daah {
+    border: 10px black;
+    border-radius: 20px;
+    margin-left: 300px;
+    margin-top: 20px;
+}
+
+#poep {
+    border-style: solid;
+    border: black;
+    border-top: grey;
+}
+
+#btn {
+    margin-left: 500px;
+    margin-top: 30px;
+}
+
+.border {
+    border-style: solid;
+    border: 10px;
+    margin-left: 350px;
+    border-radius: 20px;
+    height: 45px;
+    width: 600px;
+    text-align: center;
+}
+
+#advanced {
+    margin-top: 30px;
+    margin-left: 45px;
+}
+#advanced2 {
+    margin-top: 30px;
+    margin-left: 45px;
+}
+
+#span_adv {
+    font-size: 100%;
+    font-weight: inherit;
+    font-style: inherit;
+}
+
+#btnfuck {
+    text-align: right;
+}
